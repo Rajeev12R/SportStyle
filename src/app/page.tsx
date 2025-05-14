@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -14,7 +15,7 @@ export default function HomePage() {
       <section className="relative bg-gradient-to-br from-primary/80 via-primary to-accent/70 text-primary-foreground py-20 md:py-32 rounded-xl shadow-2xl overflow-hidden">
         <div className="absolute inset-0">
           <Image 
-            src="https://placehold.co/1200x600.png?text=Sport+Action" // Placeholder for a dynamic sports action shot
+            src="https://placehold.co/1200x600.png" 
             alt="Hero Background"
             layout="fill"
             objectFit="cover"
@@ -54,7 +55,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Link href="/sportswear" className="group block">
             <div className="relative rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 aspect-video">
-              <Image src="https://placehold.co/800x450.png?text=Sportswear+Collection" alt="Sportswear Collection" layout="fill" objectFit="cover" className="group-hover:scale-105 transition-transform duration-300" data-ai-hint="sportswear fashion"/>
+              <Image src="https://placehold.co/800x450.png" alt="Sportswear Collection" layout="fill" objectFit="cover" className="group-hover:scale-105 transition-transform duration-300" data-ai-hint="sportswear fashion"/>
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-2xl font-semibold text-white mb-2">Sportswear</h3>
                 <p className="text-sm text-gray-200 mb-3">Performance apparel for every activity.</p>
@@ -66,7 +67,7 @@ export default function HomePage() {
           </Link>
           <Link href="/uniforms" className="group block">
             <div className="relative rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 aspect-video">
-              <Image src="https://placehold.co/800x450.png?text=Uniforms+Collection" alt="Uniforms Collection" layout="fill" objectFit="cover" className="group-hover:scale-105 transition-transform duration-300" data-ai-hint="team uniforms"/>
+              <Image src="https://placehold.co/800x450.png" alt="Uniforms Collection" layout="fill" objectFit="cover" className="group-hover:scale-105 transition-transform duration-300" data-ai-hint="team uniforms"/>
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-2xl font-semibold text-white mb-2">Team Uniforms</h3>
                 <p className="text-sm text-gray-200 mb-3">Customizable kits for your entire team.</p>

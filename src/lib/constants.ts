@@ -1,3 +1,4 @@
+
 import type { LucideIcon } from 'lucide-react';
 import { Home, Shirt, Shield, ShoppingCart, Heart, User, Bot, Phone, LogIn, UserPlus } from 'lucide-react';
 import type { Product } from '@/types';
@@ -27,7 +28,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Sportswear',
     price: 29.99,
     description: 'Lightweight, breathable fabric for peak performance. Moisture-wicking technology keeps you dry and comfortable.',
-    images: ['https://placehold.co/600x600.png?text=Performance+T-Shirt', 'https://placehold.co/600x600.png?text=T-Shirt+Back'],
+    images: ['https://placehold.co/600x600.png', 'https://placehold.co/600x600.png'],
     dataAiHint: 'performance shirt',
     variants: [
       { type: 'Color', value: 'Red' },
@@ -45,7 +46,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Uniforms',
     price: 79.99,
     description: 'Complete soccer kit including jersey and shorts. Durable and designed for professional play.',
-    images: ['https://placehold.co/600x600.png?text=Soccer+Uniform', 'https://placehold.co/600x600.png?text=Uniform+Detail'],
+    images: ['https://placehold.co/600x600.png', 'https://placehold.co/600x600.png'],
     dataAiHint: 'soccer uniform',
     variants: [
       { type: 'Color', value: 'Team Yellow' },
@@ -62,7 +63,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Sportswear',
     price: 34.99,
     description: 'Stretchable and comfortable shorts perfect for any workout. Features secure pockets and an adjustable waistband.',
-    images: ['https://placehold.co/600x600.png?text=Training+Shorts'],
+    images: ['https://placehold.co/600x600.png'],
     dataAiHint: 'training shorts',
     variants: [
       { type: 'Color', value: 'Black' },
@@ -79,7 +80,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Sportswear',
     price: 89.99,
     description: 'Water-resistant and windproof jacket for running in any condition. Reflective details for visibility.',
-    images: ['https://placehold.co/600x600.png?text=Running+Jacket'],
+    images: ['https://placehold.co/600x600.png'],
     dataAiHint: 'running jacket',
     variants: [
       { type: 'Color', value: 'Neon Yellow' },
@@ -97,7 +98,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Uniforms',
     price: 55.00,
     description: 'Authentic design basketball jersey. Breathable mesh fabric for ultimate comfort on the court.',
-    images: ['https://placehold.co/600x600.png?text=Basketball+Jersey'],
+    images: ['https://placehold.co/600x600.png'],
     dataAiHint: 'basketball jersey',
     variants: [
       { type: 'Color', value: 'Home White' },
@@ -115,7 +116,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Sportswear',
     price: 45.99,
     description: 'High-waisted leggings with four-way stretch for maximum comfort and flexibility during yoga or pilates.',
-    images: ['https://placehold.co/600x600.png?text=Yoga+Leggings'],
+    images: ['https://placehold.co/600x600.png'],
     dataAiHint: 'yoga leggings',
     variants: [
       { type: 'Color', value: 'Mystic Purple' },

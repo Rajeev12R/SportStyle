@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,7 @@ import { useState, useEffect } from 'react';
 const mockUser = {
   name: 'Alex Johnson',
   email: 'alex.johnson@example.com',
-  avatarUrl: 'https://placehold.co/100x100.png?text=AJ', // Placeholder
+  avatarUrl: 'https://placehold.co/100x100.png', 
   joinDate: '2023-05-15',
 };
 
