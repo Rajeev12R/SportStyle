@@ -9,19 +9,19 @@ body {
 @layer base {
   :root {
     --background: 0 0% 96.1%; /* Off-White #F5F5F5 */
-    --foreground: 180 100% 15%; /* Darker Deep Teal for text */
+    --foreground: 20 6% 30%; /* Dark Stone for text */
     --card: 0 0% 100%; /* White */
-    --card-foreground: 180 100% 15%; /* Darker Deep Teal */
+    --card-foreground: 20 6% 30%; /* Dark Stone */
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 180 100% 15%; /* Darker Deep Teal */
+    --popover-foreground: 20 6% 30%; /* Dark Stone */
     --primary: 180 100% 25.1%; /* Deep Teal #008080 */
     --primary-foreground: 0 0% 98%; /* Off-White/White for text on primary */
     --secondary: 0 0% 82.7%; /* Light Grey #D3D3D3 */
-    --secondary-foreground: 180 100% 20%; /* Slightly lighter Deep Teal for text on secondary */
+    --secondary-foreground: 20 5% 40%; /* Medium-Dark Stone for text on secondary */
     --muted: 0 0% 90%; /* Lighter grey for muted elements */
-    --muted-foreground: 180 100% 30%; /* Muted Deep Teal for text on muted */
+    --muted-foreground: 20 5% 50%; /* Medium Stone for text on muted */
     --accent: 182 100% 74.3%; /* Electric Blue #7DF9FF */
-    --accent-foreground: 180 100% 10%; /* Very dark teal/black for text on accent */
+    --accent-foreground: 20 14% 9%; /* Very Dark Stone for text on accent */
     --destructive: 0 72.2% 50.6%; /* Adjusted destructive color for better harmony */
     --destructive-foreground: 0 0% 98%; /* White */
     --border: 0 0% 88%; /* Border color */
@@ -48,19 +48,19 @@ body {
 
   .dark {
     --background: 180 20% 10%; /* Dark tealish background */
-    --foreground: 0 0% 96.1%; /* Off-White */
+    --foreground: 20 6% 88%; /* Light Stone */
     --card: 180 20% 12%; /* Slightly lighter dark teal */
-    --card-foreground: 0 0% 96.1%;
+    --card-foreground: 20 6% 88%; /* Light Stone */
     --popover: 180 20% 12%;
-    --popover-foreground: 0 0% 96.1%;
+    --popover-foreground: 20 6% 88%; /* Light Stone */
     --primary: 180 100% 35%; /* Brighter Deep Teal for dark mode */
     --primary-foreground: 0 0% 98%;
     --secondary: 180 20% 18%; /* Darker grey/teal */
-    --secondary-foreground: 0 0% 90%;
+    --secondary-foreground: 20 5% 80%; /* Light-Medium Stone */
     --muted: 180 20% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted-foreground: 20 5% 70%; /* Medium Stone */
     --accent: 182 100% 65%; /* Slightly toned down Electric Blue for dark mode */
-    --accent-foreground: 180 100% 10%;
+    --accent-foreground: 20 14% 9%; /* Very Dark Stone for text on accent */
     --destructive: 0 62.8% 40.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 180 20% 20%;
