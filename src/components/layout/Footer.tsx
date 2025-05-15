@@ -24,7 +24,7 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4 text-primary hover:text-primary/80 transition-colors">
               <Shirt className="h-8 w-8" />
-              <span className="text-2xl font-bold tracking-tight">SwiftStride</span>
+              <span className="text-2xl font-bold tracking-tight">SportStyle</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Premium sportswear and uniforms for athletes who demand the best.
@@ -65,7 +65,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-border/60 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} SwiftStride. All rights reserved.
+            &copy; {currentYear} SportStyle. All rights reserved.
           </p>
         </div>
       </div>

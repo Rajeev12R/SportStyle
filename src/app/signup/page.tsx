@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Sign Up',
-  description: 'Create a new SwiftStride account.',
+  description: 'Create a new SportStyle account.',
 };
 
 export default function SignupPage() {

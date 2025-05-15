@@ -3,10 +3,10 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/products/ProductCard"
 import { MOCK_PRODUCTS } from "@/lib/constants"
-import { ArrowRight, Bot, Shield, Shirt } from "lucide-react"
+import { ArrowRight, Bot, Shield, Shirt, Home, Phone, ShoppingCart, Heart } from "lucide-react"
 
 export default function HomePage() {
-  const featuredProducts = MOCK_PRODUCTS.slice(0, 4)
+  const featuredProducts = MOCK_PRODUCTS.slice(0, 8)
 
   return (
     <div className="space-y-16">
@@ -26,7 +26,7 @@ export default function HomePage() {
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Elevate Your Game with SwiftStride
+            Elevate Your Game with SportStyle
           </h1>
           <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto">
             Discover premium sportswear and custom uniforms designed for peak
@@ -54,7 +54,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Collection Section */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
           Explore Our Collections
@@ -121,6 +121,28 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Category Section
+      <section>
+        <h2 className="text-3xl font-bold text-center mb-10 text-foreground">
+          Our Categories
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {CATEGORIES.map((category) => (
+            <div key={category.id} className="p-6 bg-card rounded-lg shadow-md">
+              <category.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-card-foreground">
+                {category.name}
+              </h3>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Link href="/categories" passHref>
+          </Link>
+        </div>
+      </section> */}
+
       {/* Featured Products Section */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-10 text-foreground">
@@ -144,32 +166,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Style Assistant CTA Section */}
-      <section className="bg-secondary py-16 rounded-xl shadow-lg">
-        <div className="container mx-auto px-4 text-center">
-          <Bot className="h-16 w-16 text-primary mx-auto mb-6" />
-          <h2 className="text-3xl font-bold mb-4 text-secondary-foreground">
-            Need Style Advice?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-            Let our AI Style Assistant help you find the perfect gear based on
-            your preferences.
-          </p>
-          <Link href="/style-assistant" passHref>
-            <Button
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              Try Style Assistant <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-      </section>
 
       {/* Why Choose Us Section */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-10 text-foreground">
-          Why Choose SwiftStride?
+          Why Choose SportStyle?
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div className="p-6 bg-card rounded-lg shadow-md">

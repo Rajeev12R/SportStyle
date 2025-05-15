@@ -25,7 +25,7 @@ import { useState, useEffect } from "react"
 
 // export const metadata: Metadata = {
 //   title: 'My Profile',
-//   description: 'Manage your SwiftStride account details and preferences.',
+//   description: 'Manage your SportStyle account details and preferences.',
 // };
 
 // Mock user data - in a real app, this would come from auth context or API

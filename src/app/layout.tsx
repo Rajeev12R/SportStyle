@@ -17,10 +17,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'SwiftStride - Premium Sportswear & Uniforms',
-    template: '%s | SwiftStride',
+    default: 'SportStyle - Premium Sportswear & Uniforms',
+    template: '%s | SportStyle',
   },
-  description: 'Discover the latest in performance sportswear and custom team uniforms at SwiftStride. Quality, style, and comfort for every athlete.',
+  description: 'Discover the latest in performance sportswear and custom team uniforms at SportStyle. Quality, style, and comfort for every athlete.',
   keywords: ['sportswear', 'uniforms', 'athletic wear', 'team gear', 'sports apparel'],
 };
 

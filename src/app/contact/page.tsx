@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 // export const metadata: Metadata = {
 //   title: 'Contact Us',
-//   description: 'Get in touch with SwiftStride for support or inquiries.',
+//   description: 'Get in touch with SportStyle for support or inquiries.',
 // };
 
 const contactFormSchema = z.object({
@@ -57,7 +57,7 @@ export default function ContactPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-primary mb-3">Contact SwiftStride</h1>
+        <h1 className="text-4xl font-bold text-primary mb-3">Contact SportStyle</h1>
         <p className="text-lg text-muted-foreground max-w-xl mx-auto">
           We're here to help! Whether you have questions about products, orders, or custom uniforms, feel free to reach out.
         </p>
@@ -143,7 +143,7 @@ export default function ContactPage() {
         </Card>
 
         {/* Contact Info Card */}
-        <Card className="shadow-xl bg-secondary text-secondary-foreground">
+        <Card className="shadow-xl bg-white border-stone-700 border-[0.5] text-secondary-foreground">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Our Contact Information</CardTitle>
             <CardDescription>You can also reach us through these channels.</CardDescription>
@@ -153,8 +153,8 @@ export default function ContactPage() {
               <Mail className="h-8 w-8 text-primary mt-1 shrink-0" />
               <div>
                 <h4 className="font-semibold">Email</h4>
-                <a href="mailto:support@swiftstride.com" className="hover:text-primary transition-colors">
-                  support@swiftstride.com
+                <a href="mailto:support@SportStyle.com" className="hover:text-primary transition-colors">
+                  support@SportStyle.com
                 </a>
               </div>
             </div>

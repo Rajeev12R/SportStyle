@@ -30,7 +30,7 @@ const AppLogo = () => (
     className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
   >
     <Shirt className="h-8 w-8" />
-    <span className="text-2xl font-bold tracking-tight">SwiftStride</span>
+    <span className="text-2xl font-bold tracking-tight">SportStyle</span>
   </Link>
 )
 
@@ -75,7 +75,7 @@ export default function Header() {
           <div className="flex items-center gap-2 text-primary">
             <Shirt className="h-8 w-8" />
             <span className="text-2xl font-bold tracking-tight">
-              SwiftStride
+              SportStyle
             </span>
           </div>
           <div className="h-8 w-8 bg-muted rounded-md animate-pulse md:hidden"></div>
@@ -150,7 +150,7 @@ export default function Header() {
 
                 <div className="mt-auto pt-6 border-t border-border/40">
                   <p className="text-center text-sm text-muted-foreground">
-                    &copy; {new Date().getFullYear()} SwiftStride
+                    &copy; {new Date().getFullYear()} SportStyle
                   </p>
                 </div>
               </div>
