@@ -313,6 +313,87 @@ export default function SportswearPage() {
                   Next
                 </button>
               </div>
+              <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+                <DialogContent className="max-w-md mx-auto text-center p-0 overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary to-green-400 py-6 flex flex-col items-center justify-center relative">
+                    <div className="bg-white rounded-full p-3 shadow-lg mb-2 animate-bounce">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-12 h-12 text-green-500"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4.5 12.75l6 6 9-13.5"
+                        />
+                      </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-white drop-shadow mb-1">
+                      Thank you!
+                    </h2>
+                    <p className="text-white/90 mb-0">
+                      We appreciate your interest.
+                    </p>
+                  </div>
+                  {selectedProduct && (
+                    <div className="p-6 flex flex-col items-center">
+                      <img
+                        src={
+                          selectedProduct.images?.[0] || "/default-product.png"
+                        }
+                        alt={selectedProduct.name}
+                        className="w-32 h-32 object-cover rounded-lg mb-4 border"
+                        onError={(e) => {
+                          e.currentTarget.src = "/default-product.png"
+                        }}
+                      />
+                      <div className="text-lg font-semibold mb-2">
+                        {selectedProduct.name}
+                      </div>
+                      <div className="text-primary font-bold text-xl mb-2">
+                        ₹{selectedProduct.price.toFixed(2)}
+                      </div>
+                      <div className="text-gray-500 mb-4">
+                        {selectedProduct.category}
+                      </div>
+                      <a
+                        href={`https://wa.me/919999999999?text=Hi! I'm interested in ${encodeURIComponent(
+                          selectedProduct.name
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition mb-4"
+                      >
+                        WhatsApp Us
+                      </a>
+                      <div className="flex flex-col items-center gap-1 text-sm text-gray-600 mt-2">
+                        <span>
+                          Email:{" "}
+                          <a
+                            href="mailto:support@sportstyle.com"
+                            className="underline hover:text-primary"
+                          >
+                            support@sportstyle.com
+                          </a>
+                        </span>
+                        <span>
+                          Phone:{" "}
+                          <a
+                            href="tel:+919999999999"
+                            className="underline hover:text-primary"
+                          >
+                            +91-99999-99999
+                          </a>
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
             </>
           ) : (
             <div className="text-center py-16">
@@ -329,108 +410,6 @@ export default function SportswearPage() {
               </p>
             </div>
           )}
-          {/* Thank You Modal */}
-          <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-            <DialogContent className="max-w-md mx-auto text-center p-0 overflow-hidden">
-              {/* Header with icon and gradient */}
-              <div className="bg-gradient-to-r from-primary to-green-400 py-6 flex flex-col items-center justify-center relative">
-                <div className="bg-white rounded-full p-3 shadow-lg mb-2 animate-bounce">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-12 h-12 text-green-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.5 12.75l6 6 9-13.5"
-                    />
-                  </svg>
-                </div>
-                <h2 className="text-2xl font-bold text-white drop-shadow mb-1">
-                  Thank you!
-                </h2>
-                <p className="text-white/90 mb-0">
-                  We appreciate your interest.
-                </p>
-              </div>
-              {/* Product info */}
-              {selectedProduct && (
-                <div className="flex flex-col items-center gap-2 py-4 px-6">
-                  <img
-                    src={selectedProduct.images?.[0] || "/default-product.png"}
-                    alt={selectedProduct.name}
-                    className="w-20 h-20 object-cover rounded-lg border border-gray-200 shadow"
-                  />
-                  <div className="text-lg font-semibold text-gray-900 mt-2 mb-1">
-                    {selectedProduct.name}
-                  </div>
-                </div>
-              )}
-              {/* Contact info */}
-              <div className="px-6 pb-4">
-                <div className="mb-2 text-gray-700">
-                  For any queries or to place an order, contact us:
-                </div>
-                <div className="mb-3 flex flex-col gap-1 items-center">
-                  <div className="font-medium">
-                    Phone:{" "}
-                    <a
-                      href="tel:+911234567890"
-                      className="text-primary underline"
-                    >
-                      +91 12345 67890
-                    </a>
-                  </div>
-                  <div className="font-medium">
-                    Email:{" "}
-                    <a
-                      href="mailto:info@sportstyle.com"
-                      className="text-primary underline"
-                    >
-                      info@sportstyle.com
-                    </a>
-                  </div>
-                </div>
-                <a
-                  href={
-                    selectedProduct
-                      ? `https://wa.me/911234567890?text=Hi, I want to buy ${encodeURIComponent(
-                          selectedProduct.name
-                        )} from SportStyle.`
-                      : `https://wa.me/911234567890`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold shadow-lg hover:bg-green-600 transition text-lg mt-2 w-full justify-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.862 14.487c-.263-.131-1.558-.77-1.799-.858-.241-.088-.417-.131-.593.132-.175.263-.676.858-.829 1.033-.152.175-.304.197-.567.066-.263-.132-1.11-.409-2.115-1.304-.782-.696-1.31-1.556-1.464-1.819-.152-.263-.016-.405.115-.536.118-.117.263-.304.395-.456.132-.152.175-.263.263-.438.087-.175.044-.329-.022-.462-.066-.132-.593-1.433-.813-1.963-.214-.514-.432-.444-.593-.453l-.504-.009c-.175 0-.462.066-.705.329-.241.263-.92.899-.92 2.192 0 1.293.942 2.544 1.073 2.718.131.175 1.853 2.832 4.49 3.858.628.271 1.117.433 1.498.554.63.2 1.204.172 1.658.104.506-.075 1.558-.637 1.779-1.253.22-.616.22-1.143.154-1.253-.066-.11-.241-.175-.504-.307z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 12c0-4.97-4.03-9-9-9s-9 4.03-9 9c0 1.591.416 3.085 1.144 4.375L3 21l4.755-1.244A8.963 8.963 0 0012 21c4.97 0 9-4.03 9-9z"
-                    />
-                  </svg>
-                  WhatsApp Us
-                </a>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
       </div>
     </div>

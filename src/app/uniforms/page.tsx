@@ -14,6 +14,7 @@ import { Filter, ArrowDownUp, Shield, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import SidebarFilter from "@/components/products/SidebarFilter"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 
 export default function UniformsPage() {
   const uniformProducts = MOCK_PRODUCTS.filter(
@@ -106,6 +107,13 @@ export default function UniformsPage() {
   }
 
   const [showMobileFilter, setShowMobileFilter] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product)
+    setModalOpen(true)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -249,7 +257,13 @@ export default function UniformsPage() {
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:py-6">
               {filteredProducts.map((product: Product) => (
-                <ProductCard key={product.id} product={product} />
+                <div
+                  key={product.id}
+                  onClick={() => handleProductClick(product)}
+                  className="cursor-pointer"
+                >
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
           ) : (
@@ -267,6 +281,85 @@ export default function UniformsPage() {
               </p>
             </div>
           )}
+          <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+            <DialogContent className="max-w-md mx-auto text-center p-0 overflow-hidden">
+              <div className="bg-gradient-to-r from-primary to-green-400 py-6 flex flex-col items-center justify-center relative">
+                <div className="bg-white rounded-full p-3 shadow-lg mb-2 animate-bounce">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-12 h-12 text-green-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.5 12.75l6 6 9-13.5"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-white drop-shadow mb-1">
+                  Thank you!
+                </h2>
+                <p className="text-white/90 mb-0">
+                  We appreciate your interest.
+                </p>
+              </div>
+              {selectedProduct && (
+                <div className="p-6 flex flex-col items-center">
+                  <img
+                    src={selectedProduct.images?.[0] || "/default-product.png"}
+                    alt={selectedProduct.name}
+                    className="w-32 h-32 object-cover rounded-lg mb-4 border"
+                    onError={(e) => {
+                      e.currentTarget.src = "/default-product.png"
+                    }}
+                  />
+                  <div className="text-lg font-semibold mb-2">
+                    {selectedProduct.name}
+                  </div>
+                  <div className="text-primary font-bold text-xl mb-2">
+                    ₹{selectedProduct.price.toFixed(2)}
+                  </div>
+                  <div className="text-gray-500 mb-4">
+                    {selectedProduct.category}
+                  </div>
+                  <a
+                    href={`https://wa.me/919999999999?text=Hi! I'm interested in ${encodeURIComponent(
+                      selectedProduct.name
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition mb-4"
+                  >
+                    WhatsApp Us
+                  </a>
+                  <div className="flex flex-col items-center gap-1 text-sm text-gray-600 mt-2">
+                    <span>
+                      Email:{" "}
+                      <a
+                        href="mailto:support@sportstyle.com"
+                        className="underline hover:text-primary"
+                      >
+                        support@sportstyle.com
+                      </a>
+                    </span>
+                    <span>
+                      Phone:{" "}
+                      <a
+                        href="tel:+919999999999"
+                        className="underline hover:text-primary"
+                      >
+                        +91-99999-99999
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
