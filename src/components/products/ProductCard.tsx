@@ -76,11 +76,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-4">
         {/* Brand and name */}
         <div className="text-xs text-gray-500 font-medium mb-1">{brand}</div>
-        <Link href={`/products/${product.id}`} className="block">
+        {/* <Link href={`/products/${product.id}`} className="block"> */}
           <div className="text-base font-semibold text-gray-900 truncate mb-1">
             {product.name}
           </div>
-        </Link>
+        {/* </Link> */}
         {/* Rating */}
         {product.rating && (
           <div className="flex items-center gap-1 text-sm text-gray-500 mb-1">
