@@ -1,16 +1,59 @@
-import type { Product } from '@/types';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Heart, ShoppingCart, Star } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+"use client"
+
+import type { Product } from "@/types"
+import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Heart, Star, Check } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { useToast } from "@/hooks/use-toast"
+import { useState } from "react"
+import { useCart } from "@/context/CartContext"
+import { useWishlist } from "@/context/WishlistContext"
 
 interface ProductCardProps {
-  product: Product;
+  product: Product
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { toast } = useToast()
+  const [isAddingCart, setIsAddingCart] = useState(false)
+  const [isAddingWishlist, setIsAddingWishlist] = useState(false)
+  const { cart, addToCart } = useCart()
+  const { wishlist, addToWishlist } = useWishlist()
+
+  const inCart = cart.some((item) => item.id === product.id)
+  const inWishlist = wishlist.some((item) => item.id === product.id)
+
+  const handleAddToCart = () => {
+    if (inCart) return
+    setIsAddingCart(true)
+    addToCart(product, 1)
+    toast({
+      title: `${product.name} added to cart!`,
+      description: "View your cart to checkout.",
+    })
+    setTimeout(() => setIsAddingCart(false), 500)
+  }
+
+  const handleAddToWishlist = () => {
+    if (inWishlist) return
+    setIsAddingWishlist(true)
+    addToWishlist(product)
+    toast({
+      title: `${product.name} added to wishlist!`,
+      action: <Heart className="text-red-500 fill-red-500" />,
+    })
+    setTimeout(() => setIsAddingWishlist(false), 500)
+  }
+
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full rounded-lg">
       <CardHeader className="p-0 relative">
@@ -21,18 +64,24 @@ export default function ProductCard({ product }: ProductCardProps) {
             width={400}
             height={400}
             className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-            data-ai-hint={product.dataAiHint || 'product image'}
+            data-ai-hint={product.dataAiHint || "product image"}
           />
         </Link>
         {product.category && (
-          <Badge variant="secondary" className="absolute top-2 left-2 bg-opacity-80 backdrop-blur-sm">
+          <Badge
+            variant="secondary"
+            className="absolute top-2 left-2 bg-opacity-80 backdrop-blur-sm"
+          >
             {product.category}
           </Badge>
         )}
       </CardHeader>
       <CardContent className="p-4 flex-grow">
         <Link href={`/products/${product.id}`} className="block">
-          <CardTitle className="text-lg font-semibold mb-1 hover:text-primary transition-colors truncate" title={product.name}>
+          <CardTitle
+            className="text-lg font-semibold mb-1 hover:text-primary transition-colors truncate"
+            title={product.name}
+          >
             {product.name}
           </CardTitle>
         </Link>
@@ -40,26 +89,44 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.description.substring(0, 60)}...
         </p>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
+          <p className="text-xl font-bold text-primary">
+            ₹{product.price.toFixed(2)}
+          </p>
           {product.rating && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span>{product.rating.toFixed(1)} ({product.reviews})</span>
+              <span>
+                {product.rating.toFixed(1)} ({product.reviews})
+              </span>
             </div>
           )}
         </div>
       </CardContent>
       <CardFooter className="p-4 border-t">
         <div className="flex w-full gap-2">
-          <Button variant="outline" size="sm" className="flex-1 group" aria-label={`Add ${product.name} to cart`}>
-            <ShoppingCart className="mr-2 h-4 w-4 group-hover:text-primary transition-colors" />
-            Add to Cart
-          </Button>
-          <Button variant="ghost" size="icon" aria-label={`Add ${product.name} to wishlist`} className="group">
-            <Heart className="h-5 w-5 text-muted-foreground group-hover:fill-red-500 group-hover:text-red-500 transition-colors" />
+          <Button
+            variant={inWishlist ? "secondary" : "ghost"}
+            size="sm"
+            className="flex-1 group"
+            aria-label={`Add ${product.name} to wishlist`}
+            onClick={handleAddToWishlist}
+            disabled={isAddingWishlist || inWishlist}
+          >
+            <Heart
+              className={`mr-2 h-5 w-5 ${
+                inWishlist
+                  ? "fill-red-500 text-red-500"
+                  : "text-muted-foreground group-hover:fill-red-500 group-hover:text-red-500 transition-colors"
+              }`}
+            />
+            {inWishlist
+              ? "In Wishlist"
+              : isAddingWishlist
+              ? "Adding..."
+              : "Add to Wishlist"}
           </Button>
         </div>
       </CardFooter>
     </Card>
-  );
+  )
 }

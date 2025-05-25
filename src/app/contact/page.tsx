@@ -142,7 +142,6 @@ export default function ContactPage() {
           </CardContent>
         </Card>
 
-        {/* Contact Info Card */}
         <Card className="shadow-xl bg-white border-stone-700 border-[0.5] text-secondary-foreground">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Our Contact Information</CardTitle>

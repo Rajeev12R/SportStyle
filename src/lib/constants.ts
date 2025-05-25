@@ -24,7 +24,7 @@ export const NAV_LINKS: NavLinkItem[] = [
   { href: "/sportswear", label: "Sportswear", icon: Shirt },
   { href: "/uniforms", label: "Uniforms", icon: Shield },
   { href: "/contact", label: "Contact Us", icon: Phone },
-  { href: "/cart", label: "Cart", icon: ShoppingCart },
+  // { href: "/cart", label: "Cart", icon: ShoppingCart },
   { href: "/wishlist", label: "Wishlist", icon: Heart },
   { href: "/profile", label: "Profile", icon: User },
   // { href: '/login', label: 'Login', icon: LogIn }, // Example conditional link

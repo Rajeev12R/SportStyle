@@ -1,44 +1,56 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
+import "./globals.css"
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
 import { Toaster } from "@/components/ui/toaster"
+import Providers from "./Providers"
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+})
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: {
-    default: 'SportStyle - Premium Sportswear & Uniforms',
-    template: '%s | SportStyle',
+    default: "SportStyle - Premium Sportswear & Uniforms",
+    template: "%s | SportStyle",
   },
-  description: 'Discover the latest in performance sportswear and custom team uniforms at SportStyle. Quality, style, and comfort for every athlete.',
-  keywords: ['sportswear', 'uniforms', 'athletic wear', 'team gear', 'sports apparel'],
-};
+  description:
+    "Discover the latest in performance sportswear and custom team uniforms at SportStyle. Quality, style, and comfort for every athlete.",
+  keywords: [
+    "sportswear",
+    "uniforms",
+    "athletic wear",
+    "team gear",
+    "sports apparel",
+  ],
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
-        <Header />
-        <main className="flex-grow container mx-auto px-4 py-8">
-          {children}
-        </main>
-        <Footer />
-        <Toaster />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+      >
+        <Providers>
+          <Header />
+          <main className="flex-grow container mx-auto px-4 py-8">
+            {children}
+          </main>
+          <Footer />
+          <Toaster />
+        </Providers>
       </body>
     </html>
-  );
+  )
 }

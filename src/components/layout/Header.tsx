@@ -4,7 +4,6 @@ import Link from "next/link"
 import {
   Shirt,
   Home,
-  ShoppingCart,
   Heart,
   User,
   Phone,
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/sheet"
 import { useState, useEffect } from "react"
 import { NAV_LINKS, NavLinkItem } from "@/lib/constants"
+import { useSession } from "next-auth/react"
 
 const AppLogo = () => (
   <Link
@@ -63,6 +63,7 @@ const MobileNavItem: React.FC<{ item: NavLinkItem }> = ({ item }) => (
 export default function Header() {
   const [isMounted, setIsMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { data: session } = useSession()
 
   useEffect(() => {
     setIsMounted(true)
@@ -101,6 +102,17 @@ export default function Header() {
           {commonNavLinks.map((item) => (
             <DesktopNavItem key={item.href} item={item} />
           ))}
+          {session?.user?.role === "admin" && (
+            <Link href="/admin-dashboard" passHref>
+              <Button
+                variant="ghost"
+                className="text-foreground hover:bg-accent/10 hover:text-primary"
+              >
+                <Bot className="mr-2 h-5 w-5" />
+                Admin
+              </Button>
+            </Link>
+          )}
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
@@ -146,6 +158,19 @@ export default function Header() {
                   {NAV_LINKS.map((item) => (
                     <MobileNavItem key={item.href} item={item} />
                   ))}
+                  {session?.user?.role === "admin" && (
+                    <SheetClose asChild>
+                      <Link href="/admin-dashboard" passHref>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start text-lg py-3 text-foreground hover:bg-accent/10 hover:text-primary"
+                        >
+                          <Bot className="mr-3 h-6 w-6" />
+                          Admin
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                  )}
                 </nav>
 
                 <div className="mt-auto pt-6 border-t border-border/40">

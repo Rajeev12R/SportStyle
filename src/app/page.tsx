@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/products/ProductCard"
 import { MOCK_PRODUCTS } from "@/lib/constants"
-import { ArrowRight, Bot, Shield, Shirt, Home, Phone, ShoppingCart, Heart } from "lucide-react"
+import { ArrowRight, Bot, Shield, Shirt, Home, Phone } from "lucide-react"
 
 export default function HomePage() {
   const featuredProducts = MOCK_PRODUCTS.slice(0, 8)
@@ -121,28 +121,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Category Section
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-10 text-foreground">
-          Our Categories
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {CATEGORIES.map((category) => (
-            <div key={category.id} className="p-6 bg-card rounded-lg shadow-md">
-              <category.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2 text-card-foreground">
-                {category.name}
-              </h3>
-            </div>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <Link href="/categories" passHref>
-          </Link>
-        </div>
-      </section> */}
-
       {/* Featured Products Section */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-10 text-foreground">
@@ -165,35 +143,50 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-
-
       {/* Why Choose Us Section */}
-      <section>
+      <section className="pb-6">
         <h2 className="text-3xl font-bold text-center mb-10 text-foreground">
           Why Choose SportStyle?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="p-6 bg-card rounded-lg shadow-md">
-            <Shirt className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2 text-card-foreground">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 relative">
+          {/* Timeline/Stepper Line */}
+          <div
+            className="hidden md:block absolute left-1/2 top-12 h-1 w-3/4 bg-gradient-to-r from-primary via-accent to-primary/60 rounded-full -translate-x-1/2 z-0"
+            style={{ height: "6px", top: "60px" }}
+          />
+
+          {/* Step 1 */}
+          <div className="relative z-10 flex flex-col items-center text-center bg-white dark:bg-card rounded-xl shadow-lg p-8 w-72 border-2 border-pink-400/60 hover:scale-105 transition-transform duration-300">
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-pink-100 dark:bg-pink-400/20 mb-4 shadow">
+              <Shirt className="h-10 w-10 text-pink-500" />
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-pink-500">
               Premium Quality
             </h3>
             <p className="text-sm text-muted-foreground">
               Durable materials and craftsmanship for long-lasting wear.
             </p>
           </div>
-          <div className="p-6 bg-card rounded-lg shadow-md">
-            <Bot className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2 text-card-foreground">
+
+          {/* Step 2 */}
+          <div className="relative z-10 flex flex-col items-center text-center bg-white dark:bg-card rounded-xl shadow-lg p-8 w-72 border-2 border-accent/20 hover:scale-105 transition-transform duration-300">
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-accent/10 mb-4 shadow">
+              <Bot className="h-10 w-10 text-accent" />
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-accent">
               Innovative Design
             </h3>
             <p className="text-sm text-muted-foreground">
               Modern styles infused with performance-enhancing technology.
             </p>
           </div>
-          <div className="p-6 bg-card rounded-lg shadow-md">
-            <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2 text-card-foreground">
+
+          {/* Step 3 */}
+          <div className="relative z-10 flex flex-col items-center text-center bg-white dark:bg-card rounded-xl shadow-lg p-8 w-72 border-2 border-yellow-400/60 hover:scale-105 transition-transform duration-300">
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-yellow-100 dark:bg-yellow-400/20 mb-4 shadow">
+              <Shield className="h-10 w-10 text-yellow-500" />
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-yellow-500">
               Customization Experts
             </h3>
             <p className="text-sm text-muted-foreground">
