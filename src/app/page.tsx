@@ -1,55 +1,74 @@
+"use client"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/products/ProductCard"
 import { MOCK_PRODUCTS } from "@/lib/constants"
 import { ArrowRight, Bot, Shield, Shirt, Home, Phone } from "lucide-react"
+import { useState } from "react"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import type { Product } from "@/types"
 
 export default function HomePage() {
   const featuredProducts = MOCK_PRODUCTS.slice(0, 8)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product)
+    setModalOpen(true)
+  }
 
   return (
     <div className="space-y-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/80 via-primary to-accent/70 text-primary-foreground py-20 md:py-32 rounded-xl shadow-2xl overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative flex items-center justify-center min-h-[60vh] bg-[#fafbfc] overflow-hidden">
+        {/* Left Model Image */}
+        <div className="hidden md:block absolute left-0 bottom-0 h-full w-1/3 z-10 flex items-end">
           <Image
-            src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1200&q=80"
-            alt="Hero Background"
-            layout="fill"
-            objectFit="cover"
-            className="opacity-20"
-            data-ai-hint="sport action"
+            src="/leftimg.png"
+            alt="Model Left"
+            width={420}
+            height={600}
+            className="object-contain object-left h-full w-auto"
+            priority
           />
-          <div className="absolute inset-0 bg-black/30"></div>{" "}
-          {/* Dark overlay for text contrast */}
         </div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Elevate Your Game with SportStyle
+        {/* Right Model Image */}
+        <div className="hidden md:block absolute right-0 bottom-0 h-full w-1/3 z-10 flex items-end justify-end">
+          <Image
+            src="/rightimg.png"
+            alt="Model Right"
+            width={420}
+            height={600}
+            className="object-contain object-right h-full w-auto"
+            priority
+          />
+        </div>
+        {/* Center Content */}
+        <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-2xl mx-auto text-center py-16 px-4">
+          <span className="uppercase tracking-widest text-sm font-semibold text-[#b71c2a] mb-4">
+            SportStyle
+          </span>
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight uppercase">
+            The Perfect Place Where
+            <br />
+            The Sporty Shops
           </h1>
-          <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-            Discover premium sportswear and custom uniforms designed for peak
-            performance and ultimate comfort.
+          <p className="text-lg md:text-xl mb-10 text-gray-500 max-w-xl mx-auto">
+            Discover the best sports wear and uniforms here.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/sportswear" passHref>
-              <Button
-                size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 transform hover:scale-105 transition-transform duration-300 shadow-lg"
-              >
-                Shop Sportswear <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/uniforms" passHref>
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground/10 transform hover:scale-105 transition-transform duration-300 shadow-lg"
-              >
-                Design Uniforms <Shield className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+          <Button
+            size="lg"
+            className="bg-[#b71c2a] hover:bg-[#a31524] text-white px-10 py-5 text-lg font-bold rounded-md shadow-lg mb-8"
+          >
+            Shop Now
+          </Button>
+          {/* Carousel Dots */}
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <span className="w-3 h-3 rounded-full bg-[#b71c2a] inline-block" />
+            <span className="w-3 h-3 rounded-full bg-gray-300 inline-block" />
+            <span className="w-3 h-3 rounded-full bg-gray-300 inline-block" />
           </div>
         </div>
       </section>
@@ -128,7 +147,13 @@ export default function HomePage() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <div
+              key={product.id}
+              onClick={() => handleProductClick(product)}
+              className="cursor-pointer"
+            >
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
         <div className="text-center mt-12">
@@ -142,6 +167,87 @@ export default function HomePage() {
             </Button>
           </Link>
         </div>
+        {/* Thank You Modal */}
+        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+          <DialogContent className="max-w-md mx-auto text-center p-0 overflow-hidden">
+            {/* Header with icon and gradient */}
+            <div className="bg-gradient-to-r from-primary to-green-400 py-6 flex flex-col items-center justify-center relative">
+              <div className="bg-white rounded-full p-3 shadow-lg mb-2 animate-bounce">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-12 h-12 text-green-500"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 12.75l6 6 9-13.5"
+                  />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-white drop-shadow mb-1">
+                Thank you!
+              </h2>
+              <p className="text-white/90 mb-0">We appreciate your interest.</p>
+            </div>
+            {/* Product info */}
+            {selectedProduct && (
+              <div className="p-6 flex flex-col items-center">
+                <img
+                  src={selectedProduct.images?.[0] || "/default-product.png"}
+                  alt={selectedProduct.name}
+                  className="w-32 h-32 object-cover rounded-lg mb-4 border"
+                  onError={(e) => {
+                    e.currentTarget.src = "/default-product.png"
+                  }}
+                />
+                <div className="text-lg font-semibold mb-2">
+                  {selectedProduct.name}
+                </div>
+                <div className="text-primary font-bold text-xl mb-2">
+                  ₹{selectedProduct.price.toFixed(2)}
+                </div>
+                <div className="text-gray-500 mb-4">
+                  {selectedProduct.category}
+                </div>
+                <a
+                  href={`https://wa.me/919999999999?text=Hi! I'm interested in ${encodeURIComponent(
+                    selectedProduct.name
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition mb-4"
+                >
+                  WhatsApp Us
+                </a>
+                {/* Contact Details */}
+                <div className="flex flex-col items-center gap-1 text-sm text-gray-600 mt-2">
+                  <span>
+                    Email:{" "}
+                    <a
+                      href="mailto:support@sportstyle.com"
+                      className="underline hover:text-primary"
+                    >
+                      support@sportstyle.com
+                    </a>
+                  </span>
+                  <span>
+                    Phone:{" "}
+                    <a
+                      href="tel:+919999999999"
+                      className="underline hover:text-primary"
+                    >
+                      +91-99999-99999
+                    </a>
+                  </span>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </section>
       {/* Why Choose Us Section */}
       <section className="pb-6">

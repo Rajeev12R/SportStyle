@@ -40,7 +40,7 @@ const DesktopNavItem: React.FC<{ item: NavLinkItem }> = ({ item }) => (
       variant="ghost"
       className="text-foreground hover:bg-accent/10 hover:text-primary"
     >
-      <item.icon className="mr-2 h-5 w-5" />
+      <item.icon className="h-5 w-5" />
       {item.label}
     </Button>
   </Link>
@@ -53,7 +53,7 @@ const MobileNavItem: React.FC<{ item: NavLinkItem }> = ({ item }) => (
         variant="ghost"
         className="w-full justify-start text-lg py-3 text-foreground hover:bg-accent/10 hover:text-primary"
       >
-        <item.icon className="mr-3 h-6 w-6" />
+        <item.icon className="mr-2 h-6 w-6" />
         {item.label}
       </Button>
     </Link>
@@ -94,11 +94,11 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+      <div className="container mx-auto flex h-20 items-center justify-between px-2 md:px-4">
         <AppLogo />
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden md:flex items-center gap-2 flex-shrink flex-wrap overflow-x-auto">
           {commonNavLinks.map((item) => (
             <DesktopNavItem key={item.href} item={item} />
           ))}
@@ -115,7 +115,7 @@ export default function Header() {
           )}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3 flex-shrink-0">
           {iconNavLinks.map((item) => (
             <Link href={item.href} key={item.href} passHref>
               <Button
@@ -131,7 +131,7 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden">
+        <div className="md:hidden flex-shrink-0">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="Open menu">

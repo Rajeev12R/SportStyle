@@ -3,130 +3,128 @@
 import type { Product } from "@/types"
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Heart, Star, Check } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { useToast } from "@/hooks/use-toast"
+import { Heart, Star } from "lucide-react"
 import { useState } from "react"
-import { useCart } from "@/context/CartContext"
 import { useWishlist } from "@/context/WishlistContext"
+import { toast } from "@/hooks/use-toast"
 
 interface ProductCardProps {
   product: Product
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { toast } = useToast()
-  const [isAddingCart, setIsAddingCart] = useState(false)
   const [isAddingWishlist, setIsAddingWishlist] = useState(false)
-  const { cart, addToCart } = useCart()
   const { wishlist, addToWishlist } = useWishlist()
-
-  const inCart = cart.some((item) => item.id === product.id)
   const inWishlist = wishlist.some((item) => item.id === product.id)
-
-  const handleAddToCart = () => {
-    if (inCart) return
-    setIsAddingCart(true)
-    addToCart(product, 1)
-    toast({
-      title: `${product.name} added to cart!`,
-      description: "View your cart to checkout.",
-    })
-    setTimeout(() => setIsAddingCart(false), 500)
-  }
 
   const handleAddToWishlist = () => {
     if (inWishlist) return
     setIsAddingWishlist(true)
     addToWishlist(product)
     toast({
-      title: `${product.name} added to wishlist!`,
-      action: <Heart className="text-red-500 fill-red-500" />,
+      title: "Added to Wishlist",
+      description: `${product.name} has been added to your wishlist.`,
     })
     setTimeout(() => setIsAddingWishlist(false), 500)
   }
 
+  // Extract brand from product name (first word)
+  const brand = product.name.split(" ")[0]
+
+  // Extract sizes/colors from variants
+  const sizes =
+    product.variants?.filter((v) => v.type === "Size").map((v) => v.value) || []
+  const colors =
+    product.variants?.filter((v) => v.type === "Color").map((v) => v.value) ||
+    []
+
   return (
-    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full rounded-lg">
-      <CardHeader className="p-0 relative">
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-200 hover:border-primary hover:-translate-y-1 relative">
+      {/* Wishlist/like button */}
+      <button
+        className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-sm  z-10"
+        onClick={handleAddToWishlist}
+        disabled={isAddingWishlist || inWishlist}
+        aria-label={inWishlist ? "In Wishlist" : "Add to Wishlist"}
+      >
+        <Heart
+          className={`h-5 w-5 transition-colors duration-200 ${
+            inWishlist
+              ? "fill-red-500 text-red-500"
+              : "text-gray-400 hover:text-red-500"
+          }`}
+        />
+      </button>
+      {/* Product image */}
+      {/* <Link href={`/products/${product.id}`} className="block"> */}
+      <img
+        src={
+          product.images?.[0] && product.images[0].length > 0
+            ? product.images[0]
+            : "/default-product.png"
+        }
+        alt={product.name}
+        width={400}
+        height={400}
+        className="w-full h-48 object-cover rounded-t-lg"
+        data-ai-hint={product.dataAiHint || "product image"}
+        onError={(e) => {
+          e.currentTarget.src = "/default-product.png"
+        }}
+      />
+      {/* </Link> */}
+      <div className="p-4">
+        {/* Brand and name */}
+        <div className="text-xs text-gray-500 font-medium mb-1">{brand}</div>
         <Link href={`/products/${product.id}`} className="block">
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            width={400}
-            height={400}
-            className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-            data-ai-hint={product.dataAiHint || "product image"}
-          />
-        </Link>
-        {product.category && (
-          <Badge
-            variant="secondary"
-            className="absolute top-2 left-2 bg-opacity-80 backdrop-blur-sm"
-          >
-            {product.category}
-          </Badge>
-        )}
-      </CardHeader>
-      <CardContent className="p-4 flex-grow">
-        <Link href={`/products/${product.id}`} className="block">
-          <CardTitle
-            className="text-lg font-semibold mb-1 hover:text-primary transition-colors truncate"
-            title={product.name}
-          >
+          <div className="text-base font-semibold text-gray-900 truncate mb-1">
             {product.name}
-          </CardTitle>
+          </div>
         </Link>
-        <p className="text-sm text-muted-foreground mb-2 h-10 overflow-hidden text-ellipsis">
-          {product.description.substring(0, 60)}...
-        </p>
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-xl font-bold text-primary">
+        {/* Rating */}
+        {product.rating && (
+          <div className="flex items-center gap-1 text-sm text-gray-500 mb-1">
+            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            <span>{product.rating.toFixed(1)}</span>
+            <span className="ml-1">({product.reviews})</span>
+          </div>
+        )}
+        {/* Price */}
+        <div className="flex items-center gap-2 mt-1 mb-2">
+          <span className="text-lg font-bold text-primary">
             ₹{product.price.toFixed(2)}
-          </p>
-          {product.rating && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span>
-                {product.rating.toFixed(1)} ({product.reviews})
+          </span>
+          {/* If you want to show a discount, add a strikethrough price here */}
+        </div>
+        {/* Sizes */}
+        {sizes.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            <span className="text-xs text-gray-400 mr-2">Available sizes:</span>
+            {sizes.map((size) => (
+              <span
+                key={size}
+                className="px-2 py-0.5 border border-gray-200 rounded text-xs text-gray-700 bg-gray-50"
+              >
+                {size}
               </span>
-            </div>
-          )}
-        </div>
-      </CardContent>
-      <CardFooter className="p-4 border-t">
-        <div className="flex w-full gap-2">
-          <Button
-            variant={inWishlist ? "secondary" : "ghost"}
-            size="sm"
-            className="flex-1 group"
-            aria-label={`Add ${product.name} to wishlist`}
-            onClick={handleAddToWishlist}
-            disabled={isAddingWishlist || inWishlist}
-          >
-            <Heart
-              className={`mr-2 h-5 w-5 ${
-                inWishlist
-                  ? "fill-red-500 text-red-500"
-                  : "text-muted-foreground group-hover:fill-red-500 group-hover:text-red-500 transition-colors"
-              }`}
-            />
-            {inWishlist
-              ? "In Wishlist"
-              : isAddingWishlist
-              ? "Adding..."
-              : "Add to Wishlist"}
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
+            ))}
+          </div>
+        )}
+        {/* Colors */}
+        {colors.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2 items-center">
+            <span className="text-xs text-gray-400 mr-2">Colors:</span>
+            {colors.map((color) => (
+              <span
+                key={color}
+                className="w-5 h-5 rounded-full border border-gray-200 inline-block"
+                style={{ background: color.toLowerCase() }}
+                title={color}
+              ></span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
