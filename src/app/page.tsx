@@ -5,28 +5,67 @@ import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/products/ProductCard"
 import { MOCK_PRODUCTS } from "@/lib/constants"
 import { ArrowRight, Bot, Shield, Shirt, Home, Phone } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import type { Product } from "@/types"
+
+const heroSlides = [
+  {
+    title: "The Perfect Place Where\nThe Sporty Shops",
+    subtitle: "Discover the best sports wear and uniforms here.",
+    imageLeft: "/leftimg.png",
+    imageRight: "/rightimg.png",
+    bg: "bg-[#fafbfc]",
+    button: { text: "Shop Now", href: "/sportswear" },
+  },
+  {
+    title: "Unleash Your Team Spirit",
+    subtitle: "Custom uniforms and gear for champions.",
+    imageLeft: "/leftimg.png",
+    imageRight: "/rightimg.png",
+    bg: "bg-[#f0f4f8]",
+    button: { text: "Explore Uniforms", href: "/uniforms" },
+  },
+  {
+    title: "Performance Meets Style",
+    subtitle: "Elevate your game with our latest collection.",
+    imageLeft: "/leftimg.png",
+    imageRight: "/rightimg.png",
+    bg: "bg-[#f8fafc]",
+    button: { text: "View Collection", href: "/sportswear" },
+  },
+]
 
 export default function HomePage() {
   const featuredProducts = MOCK_PRODUCTS.slice(0, 8)
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [slide, setSlide] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product)
     setModalOpen(true)
   }
 
+  const current = heroSlides[slide]
+
   return (
     <div className="space-y-16">
-      {/* Hero Section */}
-      <section className="relative flex items-center justify-center min-h-[60vh] bg-[#fafbfc] overflow-hidden">
+      {/* Hero Section Carousel */}
+      <section
+        className={`relative flex items-center justify-center min-h-[60vh] ${current.bg} overflow-hidden transition-colors duration-700`}
+      >
         {/* Left Model Image */}
         <div className="hidden md:block absolute left-0 bottom-0 h-full w-1/3 z-10 flex items-end">
           <Image
-            src="/leftimg.png"
+            src={current.imageLeft}
             alt="Model Left"
             width={420}
             height={600}
@@ -37,7 +76,7 @@ export default function HomePage() {
         {/* Right Model Image */}
         <div className="hidden md:block absolute right-0 bottom-0 h-full w-1/3 z-10 flex items-end justify-end">
           <Image
-            src="/rightimg.png"
+            src={current.imageRight}
             alt="Model Right"
             width={420}
             height={600}
@@ -50,25 +89,32 @@ export default function HomePage() {
           <span className="uppercase tracking-widest text-sm font-semibold text-[#b71c2a] mb-4">
             SportStyle
           </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight uppercase">
-            The Perfect Place Where
-            <br />
-            The Sporty Shops
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight uppercase whitespace-pre-line">
+            {current.title}
           </h1>
           <p className="text-lg md:text-xl mb-10 text-gray-500 max-w-xl mx-auto">
-            Discover the best sports wear and uniforms here.
+            {current.subtitle}
           </p>
-          <Button
-            size="lg"
-            className="bg-[#b71c2a] hover:bg-[#a31524] text-white px-10 py-5 text-lg font-bold rounded-md shadow-lg mb-8"
-          >
-            Shop Now
-          </Button>
+          <Link href={current.button.href} passHref>
+            <Button
+              size="lg"
+              className="bg-[#b71c2a] hover:bg-[#a31524] text-white px-10 py-5 text-lg font-bold rounded-md shadow-lg mb-8"
+            >
+              {current.button.text}
+            </Button>
+          </Link>
           {/* Carousel Dots */}
           <div className="flex items-center justify-center gap-2 mt-2">
-            <span className="w-3 h-3 rounded-full bg-[#b71c2a] inline-block" />
-            <span className="w-3 h-3 rounded-full bg-gray-300 inline-block" />
-            <span className="w-3 h-3 rounded-full bg-gray-300 inline-block" />
+            {heroSlides.map((_, idx) => (
+              <span
+                key={idx}
+                className={`w-3 h-3 rounded-full ${
+                  slide === idx ? "bg-[#b71c2a]" : "bg-gray-300"
+                } inline-block transition-colors`}
+                onClick={() => setSlide(idx)}
+                style={{ cursor: "pointer" }}
+              />
+            ))}
           </div>
         </div>
       </section>
