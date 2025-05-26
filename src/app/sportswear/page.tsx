@@ -14,6 +14,8 @@ import { Filter, ArrowDownUp, X } from "lucide-react"
 import { useState } from "react"
 import SidebarFilter from "@/components/products/SidebarFilter"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import ProtectedRoute from "@/components/auth/ProtectedRoute"
+import { useRouter } from "next/navigation"
 
 // Helper to get unique values
 const getUnique = (arr: any[]) => Array.from(new Set(arr.filter(Boolean)))
@@ -164,254 +166,279 @@ export default function SportswearPage() {
     setModalOpen(true)
   }
 
+  const router = useRouter()
+  const handleLogout = () => {
+    localStorage.removeItem("user")
+    router.push("/login")
+  }
+
+  const handleViewAllProducts = () => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user")
+      if (user) {
+        router.push("/sportswear")
+      } else {
+        router.push("/login?redirect=/sportswear")
+      }
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start gap-4 px-2 md:px-8">
-        {/* Sidebar - Desktop Only */}
-        <div className="hidden md:block w-72 md:sticky md:top-24 flex-shrink-0">
-          <SidebarFilter
-            categories={allCategories}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            brands={["All Brands", ...allBrands]}
-            selectedBrand={selectedBrand}
-            onBrandChange={setSelectedBrand}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            priceRange={priceRange}
-            onPriceChange={setPriceRange}
-            sizes={allSizes}
-            selectedSizes={selectedSizes}
-            onSizeToggle={handleSizeToggle}
-            colors={allColors}
-            selectedColor={selectedColor}
-            onColorChange={setSelectedColor}
-            onReset={() => {
-              handleReset()
-              setShowMobileFilter(false)
-            }}
-          />
-        </div>
-        {/* Main Content */}
-        <div className="flex-1 rounded-xl shadow-sm bg-white w-full">
-          {/* Top Bar */}
-          <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-6 md:mb-10 p-4 bg-white border-b border-gray-200 rounded-t-xl">
-            {/* Title and count */}
-            <div className="flex flex-col gap-1">
-              <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
-                SportWear Collection
-              </h2>
-              <span className="text-base font-normal text-gray-400/80">
-                {filteredProducts.length} products
-              </span>
-            </div>
-            {/* Controls */}
-            <div className="flex gap-2 w-full md:w-auto mt-2 md:mt-0">
-              <button
-                className="block md:hidden px-4 py-2 rounded border border-gray-300 bg-white text-gray-700 font-medium shadow-sm hover:bg-primary/10 transition w-full flex items-center"
-                onClick={() => setShowMobileFilter(true)}
-              >
-                <Filter className="inline-block w-4 h-4 mr-2" /> Filters
-              </button>
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full md:w-[180px] border border-gray-300">
-                  <ArrowDownUp className="mr-2 h-4 w-4 text-muted-foreground" />
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
-                  <SelectItem value="price_asc">Price: Low to High</SelectItem>
-                  <SelectItem value="price_desc">Price: High to Low</SelectItem>
-                  <SelectItem value="newest">Newest</SelectItem>
-                  <SelectItem value="rating">Avg. Customer Rating</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start gap-4 px-2 md:px-8">
+          {/* Sidebar - Desktop Only */}
+          <div className="hidden md:block w-72 md:sticky md:top-24 flex-shrink-0">
+            <SidebarFilter
+              categories={allCategories}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+              brands={["All Brands", ...allBrands]}
+              selectedBrand={selectedBrand}
+              onBrandChange={setSelectedBrand}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              priceRange={priceRange}
+              onPriceChange={setPriceRange}
+              sizes={allSizes}
+              selectedSizes={selectedSizes}
+              onSizeToggle={handleSizeToggle}
+              colors={allColors}
+              selectedColor={selectedColor}
+              onColorChange={setSelectedColor}
+              onReset={() => {
+                handleReset()
+                setShowMobileFilter(false)
+              }}
+            />
           </div>
-          {/* Sidebar Modal - Mobile Only */}
-          {showMobileFilter && (
-            <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 md:hidden">
-              <div className="bg-white w-full max-w-xs h-full shadow-xl p-4 relative animate-in slide-in-from-left-8">
+          {/* Main Content */}
+          <div className="flex-1 rounded-xl shadow-sm bg-white w-full">
+            {/* Top Bar */}
+            <div className="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-6 md:mb-10 p-4 bg-white border-b border-gray-200 rounded-t-xl">
+              {/* Title and count */}
+              <div className="flex flex-col gap-1">
+                <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
+                  SportWear Collection
+                </h2>
+                <span className="text-base font-normal text-gray-400/80">
+                  {filteredProducts.length} products
+                </span>
+              </div>
+              {/* Controls */}
+              <div className="flex gap-2 w-full md:w-auto mt-2 md:mt-0">
                 <button
-                  className="absolute top-2 right-2 text-gray-500 hover:text-primary"
-                  onClick={() => setShowMobileFilter(false)}
-                  aria-label="Close filters"
+                  className="block md:hidden px-4 py-2 rounded border border-gray-300 bg-white text-gray-700 font-medium shadow-sm hover:bg-primary/10 transition w-full flex items-center"
+                  onClick={() => setShowMobileFilter(true)}
                 >
-                  <X className="w-6 h-6" />
+                  <Filter className="inline-block w-4 h-4 mr-2" /> Filters
                 </button>
-                <SidebarFilter
-                  categories={allCategories}
-                  selectedCategory={selectedCategory}
-                  onCategoryChange={setSelectedCategory}
-                  brands={["All Brands", ...allBrands]}
-                  selectedBrand={selectedBrand}
-                  onBrandChange={setSelectedBrand}
-                  minPrice={minPrice}
-                  maxPrice={maxPrice}
-                  priceRange={priceRange}
-                  onPriceChange={setPriceRange}
-                  sizes={allSizes}
-                  selectedSizes={selectedSizes}
-                  onSizeToggle={handleSizeToggle}
-                  colors={allColors}
-                  selectedColor={selectedColor}
-                  onColorChange={setSelectedColor}
-                  onReset={() => {
-                    handleReset()
-                    setShowMobileFilter(false)
-                  }}
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-full md:w-[180px] border border-gray-300">
+                    <ArrowDownUp className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="featured">Featured</SelectItem>
+                    <SelectItem value="price_asc">
+                      Price: Low to High
+                    </SelectItem>
+                    <SelectItem value="price_desc">
+                      Price: High to Low
+                    </SelectItem>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="rating">Avg. Customer Rating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            {/* Sidebar Modal - Mobile Only */}
+            {showMobileFilter && (
+              <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 md:hidden">
+                <div className="bg-white w-full max-w-xs h-full shadow-xl p-4 relative animate-in slide-in-from-left-8">
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-primary"
+                    onClick={() => setShowMobileFilter(false)}
+                    aria-label="Close filters"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                  <SidebarFilter
+                    categories={allCategories}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={setSelectedCategory}
+                    brands={["All Brands", ...allBrands]}
+                    selectedBrand={selectedBrand}
+                    onBrandChange={setSelectedBrand}
+                    minPrice={minPrice}
+                    maxPrice={maxPrice}
+                    priceRange={priceRange}
+                    onPriceChange={setPriceRange}
+                    sizes={allSizes}
+                    selectedSizes={selectedSizes}
+                    onSizeToggle={handleSizeToggle}
+                    colors={allColors}
+                    selectedColor={selectedColor}
+                    onColorChange={setSelectedColor}
+                    onReset={() => {
+                      handleReset()
+                      setShowMobileFilter(false)
+                    }}
+                  />
+                </div>
+                {/* Click outside to close */}
+                <div
+                  className="flex-1 h-full"
+                  onClick={() => setShowMobileFilter(false)}
                 />
               </div>
-              {/* Click outside to close */}
-              <div
-                className="flex-1 h-full"
-                onClick={() => setShowMobileFilter(false)}
-              />
-            </div>
-          )}
-          {/* Product Grid & Pagination */}
-          {paginatedFilteredProducts.length > 0 ? (
-            <>
-              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4 md:py-6">
-                {paginatedFilteredProducts.map((product: Product) => (
-                  <div
-                    key={product.id}
-                    onClick={() => handleProductClick(product)}
-                    className="cursor-pointer"
-                  >
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-              </div>
-              {/* Pagination Controls */}
-              <div className="flex flex-wrap justify-center items-center gap-2 py-6">
-                <button
-                  className="px-3 py-2 rounded border text-sm font-medium disabled:opacity-50 min-w-[40px]"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => (
+            )}
+            {/* Product Grid & Pagination */}
+            {paginatedFilteredProducts.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4 md:py-6">
+                  {paginatedFilteredProducts.map((product: Product) => (
+                    <div
+                      key={product.id}
+                      onClick={() => handleProductClick(product)}
+                      className="cursor-pointer"
+                    >
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+                {/* Pagination Controls */}
+                <div className="flex flex-wrap justify-center items-center gap-2 py-6">
                   <button
-                    key={i + 1}
-                    className={`px-3 py-2 rounded border text-sm font-medium min-w-[40px] transition-colors duration-150 ${
-                      currentPage === i + 1
-                        ? "bg-primary text-white border-primary"
-                        : "bg-white text-gray-700 border-gray-200 hover:bg-primary/10"
-                    }`}
-                    onClick={() => handlePageChange(i + 1)}
+                    className="px-3 py-2 rounded border text-sm font-medium disabled:opacity-50 min-w-[40px]"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
                   >
-                    {i + 1}
+                    Previous
                   </button>
-                ))}
-                <button
-                  className="px-3 py-2 rounded border text-sm font-medium disabled:opacity-50 min-w-[40px]"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
-              </div>
-              <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-                <DialogContent className="max-w-md mx-auto text-center p-0 overflow-hidden">
-                  <div className="bg-gradient-to-r from-primary to-green-400 py-6 flex flex-col items-center justify-center relative">
-                    <div className="bg-white rounded-full p-3 shadow-lg mb-2 animate-bounce">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="w-12 h-12 text-green-500"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i + 1}
+                      className={`px-3 py-2 rounded border text-sm font-medium min-w-[40px] transition-colors duration-150 ${
+                        currentPage === i + 1
+                          ? "bg-primary text-white border-primary"
+                          : "bg-white text-gray-700 border-gray-200 hover:bg-primary/10"
+                      }`}
+                      onClick={() => handlePageChange(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    className="px-3 py-2 rounded border text-sm font-medium disabled:opacity-50 min-w-[40px]"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
+                <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+                  <DialogContent className="max-w-md mx-auto text-center p-0 overflow-hidden">
+                    <div className="bg-gradient-to-r from-primary to-green-400 py-6 flex flex-col items-center justify-center relative">
+                      <div className="bg-white rounded-full p-3 shadow-lg mb-2 animate-bounce">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="w-12 h-12 text-green-500"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5"
+                          />
+                        </svg>
+                      </div>
+                      <h2 className="text-2xl font-bold text-white drop-shadow mb-1">
+                        Thank you!
+                      </h2>
+                      <p className="text-white/90 mb-0">
+                        We appreciate your interest.
+                      </p>
+                    </div>
+                    {selectedProduct && (
+                      <div className="p-6 flex flex-col items-center">
+                        <img
+                          src={
+                            selectedProduct.images?.[0] ||
+                            "/default-product.png"
+                          }
+                          alt={selectedProduct.name}
+                          className="w-32 h-32 object-cover rounded-lg mb-4 border"
+                          onError={(e) => {
+                            e.currentTarget.src = "/default-product.png"
+                          }}
                         />
-                      </svg>
-                    </div>
-                    <h2 className="text-2xl font-bold text-white drop-shadow mb-1">
-                      Thank you!
-                    </h2>
-                    <p className="text-white/90 mb-0">
-                      We appreciate your interest.
-                    </p>
-                  </div>
-                  {selectedProduct && (
-                    <div className="p-6 flex flex-col items-center">
-                      <img
-                        src={
-                          selectedProduct.images?.[0] || "/default-product.png"
-                        }
-                        alt={selectedProduct.name}
-                        className="w-32 h-32 object-cover rounded-lg mb-4 border"
-                        onError={(e) => {
-                          e.currentTarget.src = "/default-product.png"
-                        }}
-                      />
-                      <div className="text-lg font-semibold mb-2">
-                        {selectedProduct.name}
+                        <div className="text-lg font-semibold mb-2">
+                          {selectedProduct.name}
+                        </div>
+                        <div className="text-primary font-bold text-xl mb-2">
+                          ₹{selectedProduct.price.toFixed(2)}
+                        </div>
+                        <div className="text-gray-500 mb-4">
+                          {selectedProduct.category}
+                        </div>
+                        <a
+                          href={`https://wa.me/919999999999?text=Hi! I'm interested in ${encodeURIComponent(
+                            selectedProduct.name
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition mb-4"
+                        >
+                          WhatsApp Us
+                        </a>
+                        <div className="flex flex-col items-center gap-1 text-sm text-gray-600 mt-2">
+                          <span>
+                            Email:{" "}
+                            <a
+                              href="mailto:support@sportstyle.com"
+                              className="underline hover:text-primary"
+                            >
+                              support@sportstyle.com
+                            </a>
+                          </span>
+                          <span>
+                            Phone:{" "}
+                            <a
+                              href="tel:+919999999999"
+                              className="underline hover:text-primary"
+                            >
+                              +91-99999-99999
+                            </a>
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-primary font-bold text-xl mb-2">
-                        ₹{selectedProduct.price.toFixed(2)}
-                      </div>
-                      <div className="text-gray-500 mb-4">
-                        {selectedProduct.category}
-                      </div>
-                      <a
-                        href={`https://wa.me/919999999999?text=Hi! I'm interested in ${encodeURIComponent(
-                          selectedProduct.name
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition mb-4"
-                      >
-                        WhatsApp Us
-                      </a>
-                      <div className="flex flex-col items-center gap-1 text-sm text-gray-600 mt-2">
-                        <span>
-                          Email:{" "}
-                          <a
-                            href="mailto:support@sportstyle.com"
-                            className="underline hover:text-primary"
-                          >
-                            support@sportstyle.com
-                          </a>
-                        </span>
-                        <span>
-                          Phone:{" "}
-                          <a
-                            href="tel:+919999999999"
-                            className="underline hover:text-primary"
-                          >
-                            +91-99999-99999
-                          </a>
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </DialogContent>
-              </Dialog>
-            </>
-          ) : (
-            <div className="text-center py-16">
-              <img
-                src="/empty-state-illustration.svg"
-                alt="No products"
-                className="mx-auto mb-6 w-40 h-40 opacity-80"
-              />
-              <p className="text-2xl text-muted-foreground font-semibold mb-2">
-                No sportswear products found at this time.
-              </p>
-              <p className="text-md text-gray-400">
-                Try adjusting your filters or check back soon for new arrivals!
-              </p>
-            </div>
-          )}
+                    )}
+                  </DialogContent>
+                </Dialog>
+              </>
+            ) : (
+              <div className="text-center py-16">
+                <img
+                  src="/empty-state-illustration.svg"
+                  alt="No products"
+                  className="mx-auto mb-6 w-40 h-40 opacity-80"
+                />
+                <p className="text-2xl text-muted-foreground font-semibold mb-2">
+                  No sportswear products found at this time.
+                </p>
+                <p className="text-md text-gray-400">
+                  Try adjusting your filters or check back soon for new
+                  arrivals!
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </ProtectedRoute>
   )
 }

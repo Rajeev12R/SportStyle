@@ -21,6 +21,8 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 // import type { Metadata } from 'next'; // Cannot use in client component
 
 // export const metadata: Metadata = {
@@ -32,17 +34,88 @@ import { useState, useEffect } from "react"
 const mockUser = {
   name: "Alex Johnson",
   email: "alex.johnson@example.com",
-  avatarUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+  avatarUrl: "/default.png",
   joinDate: "2023-05-15",
 }
 
 export default function ProfilePage() {
   const [user, setUser] = useState(mockUser)
   const [isMounted, setIsMounted] = useState(false)
+  const router = useRouter()
+  const [editOpen, setEditOpen] = useState(false)
+  const [editName, setEditName] = useState("")
+  const [editEmail, setEditEmail] = useState("")
+  const [editLoading, setEditLoading] = useState(false)
+  const [editError, setEditError] = useState("")
 
   useEffect(() => {
     setIsMounted(true)
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("user")
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        setUser({
+          name: parsed.fullname || parsed.name || "User",
+          email: parsed.email,
+          avatarUrl:
+            parsed.avatarUrl ||
+            "https://randomuser.me/api/portraits/men/32.jpg",
+          joinDate:
+            parsed.createdAt || parsed.joinDate || new Date().toISOString(),
+        })
+      }
+    }
   }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("user")
+    router.push("/login")
+  }
+
+  const openEdit = () => {
+    setEditName(user.name)
+    setEditEmail(user.email)
+    setEditError("")
+    setEditOpen(true)
+  }
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setEditLoading(true)
+    setEditError("")
+    try {
+      const res = await fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: JSON.parse(localStorage.getItem("user") || "{}").id,
+          fullname: editName,
+          email: editEmail,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setEditError(data.error || "Update failed")
+      } else {
+        // Update localStorage and UI
+        const updatedUser = {
+          ...JSON.parse(localStorage.getItem("user") || "{}"),
+          fullname: data.user.fullname,
+          email: data.user.email,
+        }
+        localStorage.setItem("user", JSON.stringify(updatedUser))
+        setUser({
+          ...user,
+          name: data.user.fullname,
+          email: data.user.email,
+        })
+        setEditOpen(false)
+      }
+    } catch (err) {
+      setEditError("Update failed")
+    }
+    setEditLoading(false)
+  }
 
   if (!isMounted) {
     return (
@@ -60,9 +133,6 @@ export default function ProfilePage() {
   }
 
   const profileSections = [
-    { name: "Order History", icon: ShoppingBag, href: "/profile/orders" },
-    { name: "Saved Addresses", icon: MapPin, href: "/profile/addresses" },
-    { name: "Payment Methods", icon: CreditCard, href: "/profile/payment" },
     { name: "My Wishlist", icon: Heart, href: "/wishlist" },
   ]
 
@@ -90,7 +160,12 @@ export default function ProfilePage() {
           <CardDescription className="text-lg text-muted-foreground">
             {user.email}
           </CardDescription>
-          <Button variant="outline" size="sm" className="mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-4"
+            onClick={openEdit}
+          >
             <Edit className="mr-2 h-4 w-4" /> Edit Profile
           </Button>
         </CardHeader>
@@ -109,7 +184,7 @@ export default function ProfilePage() {
                       {section.name}
                     </span>
                   </div>
-                  <User className="h-5 w-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />{" "}
+                  {/* <User className="h-5 w-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />{" "} */}
                   {/* ChevronRight equivalent */}
                 </div>
                 <Separator className="my-0 group-last-of-type:hidden" />
@@ -120,7 +195,7 @@ export default function ProfilePage() {
           <Button
             variant="destructive"
             className="w-full text-lg py-3"
-            onClick={() => console.log("Logout")}
+            onClick={handleLogout}
           >
             <LogOut className="mr-2 h-5 w-5" /> Sign Out
           </Button>
@@ -134,6 +209,43 @@ export default function ProfilePage() {
           </p>
         </CardContent>
       </Card>
+      {/* Edit Profile Modal */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="max-w-md mx-auto">
+          <form onSubmit={handleEditSubmit} className="space-y-4">
+            <h2 className="text-xl font-bold mb-2">Edit Profile</h2>
+            {editError && <div className="text-red-500">{editError}</div>}
+            <input
+              type="text"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Full Name"
+              required
+            />
+            <input
+              type="email"
+              value={editEmail}
+              onChange={(e) => setEditEmail(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Email"
+              required
+            />
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setEditOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={editLoading}>
+                {editLoading ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
